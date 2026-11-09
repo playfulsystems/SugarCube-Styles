@@ -1,0 +1,153 @@
+/*
+	Twine CSS Template: SugarCube 2 version
+
+	Mirrors the sections of Daniel Talsky's Harlowe template
+	(https://github.com/danieltalsky/twine-css-template)
+	but uses SugarCube 2 selectors. Paste into Story > Stylesheet.
+
+	SugarCube 2 page structure:
+
+	html                 font family / base size
+	+-- body             page colors
+	    +-- #ui-bar      left sidebar
+	    |   +-- #ui-bar-toggle, #ui-bar-history (back/forward)
+	    |   +-- #menu    Saves / Restart links
+	    +-- #story       main column
+	        +-- #passages
+	            +-- .passage   current passage text
+
+	COLORS (Solarized Dark, same as the Harlowe template)
+
+	- background               #002b36
+	- sidebar background       #073642
+	- main text color          #839496
+	- sidebar text color       #93a1a1
+
+	FONTS: get an @import line from https://fonts.google.com/
+*/
+@import url('https://fonts.googleapis.com/css?family=PT+Sans+Caption:400,700');
+
+/* SugarCube sets the font on html, not body */
+html {
+	font-family: 'PT Sans Caption', sans-serif;
+	/* Slightly larger than default */
+	font-size: 1.25em;
+}
+
+/* Whole browser window */
+body {
+	background-color: #002b36;
+	/* Color is the foreground / font color */
+	color: #839496;
+}
+
+/* The passage column. 55em is roughly 55 characters wide. */
+#passages {
+	max-width: 55em;
+	margin: 0 auto;
+}
+
+/* The sidebar with the history buttons, Saves and Restart */
+#ui-bar {
+	background-color: #073642;
+	color: #93a1a1;
+	border-right-color: #586e75;
+
+	/* Uncomment to hide the sidebar visually. To remove it completely,
+	   put UIBar.destroy(); in Story JavaScript instead. */
+	/* display: none; */
+}
+
+/* Back / forward / toggle buttons and the Saves / Restart menu */
+#ui-bar-toggle, #ui-bar-history [id|=history], #menu li a {
+	color: #93a1a1;
+	border-color: #586e75;
+}
+#ui-bar-toggle:hover, #ui-bar-history [id|=history]:hover, #menu li a:hover {
+	background-color: #586e75;
+	color: #fdf6e3;
+}
+
+/* Uncomment to hide only the back / forward buttons */
+/* #ui-bar-history { display: none; } */
+
+/*
+	BASIC LINK STYLES
+
+	.link-internal  links to passages ([[...]] and <<link>>)
+	.link-external  links to web pages
+	.link-broken    links to passages that don't exist
+*/
+a, .link-internal, .link-external {
+	color: #cb4b16;
+	font-weight: bold;
+	/* Glow: right offset, down offset, blur, color */
+	text-shadow: 0 0 5px #cb4b16;
+}
+/* Visited passage links. Needs this line in Story JavaScript:
+   Config.addVisitedLinkClass = true; */
+.link-visited {
+	color: #268bd2;
+	text-shadow: 0 0 5px #268bd2;
+}
+/* Links when the mouse is over them */
+a:hover, .link-internal:hover, .link-external:hover {
+	color: #2aa198;
+	text-decoration: none;
+	text-shadow: 0 0 5px #2aa198;
+}
+/* Makes broken links obvious while you're writing */
+.link-broken {
+	color: #dc322f;
+}
+
+/*
+	EFFECTS
+
+	Wrap revealed text in:
+	<span class="pulse-in">Text that gets shown.</span>
+	so the player notices it appear (good with <<append>>, <<replace>>).
+*/
+@keyframes pulsein {
+	from { color: #00fbf7; text-shadow: 0 0 1em #00fbf7; }
+	to   { color: #adc3d8; text-shadow: 0 0; }
+}
+.pulse-in {
+	color: #adc3d8;
+	animation: pulsein 1.2s linear 3;
+}
+
+/* IMAGE STYLES */
+img {
+	/* border: 1px solid black; */
+}
+/* <img class="full-width" src="..."> stretches to the passage width */
+img.full-width {
+	display: block;
+	width: 100%;
+	margin: 0 auto;
+}
+
+/*
+	PASSAGE TAG STYLES
+
+	SugarCube adds each passage's tags as classes on body and on the
+	passage, and as data-tags on body. A passage tagged "dark":
+*/
+body[data-tags~="dark"] {
+	background-color: #000000;
+}
+
+/*
+	SMALL SCREENS
+
+	SugarCube's default CSS already stacks the sidebar on narrow
+	screens, so these rules only enlarge the text.
+*/
+@media screen and (max-width: 960px) {
+	html { font-size: 1.4em; }
+	#passages { max-width: 100%; }
+}
+@media screen and (max-width: 480px) {
+	html { font-size: 1.6em; }
+}
